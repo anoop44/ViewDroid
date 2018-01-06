@@ -1,8 +1,6 @@
-package com.eagle.gkpedia.monitor.ui
+package ss.anoop.viewdroid
 
 import android.view.ViewGroup
-import com.eagle.gkpedia.monitor.ui.base.Screen
-import okhttp3.Route
 import java.util.*
 
 /**
@@ -10,7 +8,7 @@ import java.util.*
  */
 class Router {
 
-    private val backstack: Stack<Screen> = Stack()
+    private val backstack: Stack<RouterTransaction> = Stack()
 
     companion object {
 
@@ -22,25 +20,38 @@ class Router {
         }
     }
 
-    fun presentScreen(screen: Screen) {
+    private constructor()
 
-        backstack.add(screen)
+    fun presentScreen(routerTransaction: RouterTransaction) {
 
-        screen.createView(screenContainer?.context)
+        backstack.add(routerTransaction)
 
-        screenContainer?.addView(screen.getView())
+        routerTransaction.getScreen().setRouter(this)
 
+        routerTransaction.getScreen().createView(screenContainer?.context)
+
+        screenContainer?.addView(routerTransaction.getScreen().getView())
+
+        routerTransaction.getEnterTransition()?.animation(null, routerTransaction.getScreen().getView(), true)?.start()
+
+    }
+
+    fun replaceScreen(routerTransaction: RouterTransaction) {
+        if (!backstack.isEmpty()) {
+            backstack.pop()!!.getScreen().destroy()
+        }
+        presentScreen(routerTransaction)
     }
 
     fun handleBack(): Boolean {
 
         var handled = false
         if (backstack.isNotEmpty()) {
-            handled = backstack.peek().handleBack()
+            handled = backstack.peek().getScreen().handleBack()
 
             if (!handled && backstack.size > 1) {
-                screenContainer?.removeView(backstack.peek().getView())
-                backstack.peek().destroy()
+                screenContainer?.removeView(backstack.peek().getScreen().getView())
+                backstack.peek().getScreen().destroy()
                 backstack.pop()
 
                 handled = true
