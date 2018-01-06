@@ -2,15 +2,26 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
-    steps:
-      - checkout
-      - run:
-          name: Clean
-          command: ./gradlew clean
-      - run:
-          name: Build release
-          command: ./gradlew assembleRelease
+          # Android the primary container
+          - image: circleci/android:api-26-alpha
+        environment:
+          JVM_OPTS: -Xmx3200m
+        steps:
+          - checkout
+          - restore_cache:
+              key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          - run:
+              name: Accept licenses
+              command: yes | sdkmanager --licenses || true
+          - run:
+              name: Download Dependencies
+              command: ./gradlew androidDependencies
+          - run:
+              name: clean
+              command: ./gradlew clean
+          - run:
+              name: buildRelease
+              command: ./gradlew assembleRelease
 general:
   branches:
     only:
