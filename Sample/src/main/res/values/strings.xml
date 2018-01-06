@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ViewDroid</string>
+
+    <string name="navigation_demo">Navigation Demo</string>
+    <string name="pop_to_root">Pop to root</string>
+    <string name="next_screen">Next Screen</string>
 </resources>

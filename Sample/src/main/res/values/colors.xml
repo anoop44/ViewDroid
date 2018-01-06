@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="navigation_screen_colors_1">#3F51B5</color>
+    <color name="navigation_screen_colors_2">#d7f55c</color>
+    <color name="navigation_screen_colors_3">#f9423f</color>
+    <color name="navigation_screen_colors_4">#44f7e5</color>
+    <color name="navigation_screen_colors_5">#e561f1</color>
+    <color name="navigation_screen_colors_6">#5cf5e6</color>
 </resources>
