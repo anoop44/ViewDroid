@@ -11,3 +11,7 @@ jobs:
       - run:
           name: Build release
           command: ./gradlew assembleRelease
+general:
+  branches:
+    only:
+      - develop
