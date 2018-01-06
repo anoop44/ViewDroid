@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: Clean
+          command: ./gradlew clean
+      - run:
+          name: Build release
+          command: ./gradlew assembleRelease
