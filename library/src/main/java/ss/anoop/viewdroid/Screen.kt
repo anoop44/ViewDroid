@@ -1,5 +1,6 @@
 package ss.anoop.viewdroid
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ abstract class Screen {
     private var bundle : Bundle? = null
 
     private val invalidLayoutRes = 0
+
+    private lateinit var activity: Activity
 
     /**
      * Holds the reference to the actual view of the screen. It will be initialized only when a screen is presented in screen using @link{Router} methods. @see Screen#onCreateView()
@@ -44,6 +47,12 @@ abstract class Screen {
             throw IllegalArgumentException("Layout resource provided through getLayout() should be a valid one")
         }
 
+        if(null == context){
+            throw IllegalArgumentException("Context should'nt be null")
+        }
+
+        activity = context as Activity
+
         view = LayoutInflater.from(context).inflate(getLayout(), null)
 
         onViewCreated(view)
@@ -63,6 +72,8 @@ abstract class Screen {
     }
 
     fun getArgs() = bundle
+
+    fun getActivity() = activity
 
     open fun onViewCreated(v : View){}
 
