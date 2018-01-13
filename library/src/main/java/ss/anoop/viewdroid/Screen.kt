@@ -75,7 +75,11 @@ abstract class Screen {
 
     fun getActivity() = activity
 
+    fun exit() = getRouter().pop()
+
     open fun onViewCreated(v : View){}
+
+    open fun onScreenResume() {}
 
     open fun destroy(){}
 

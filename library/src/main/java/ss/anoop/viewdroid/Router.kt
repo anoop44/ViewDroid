@@ -43,6 +43,10 @@ class Router {
         presentScreen(routerTransaction)
     }
 
+    fun pop() {
+        handleBack()
+    }
+
     fun handleBack(): Boolean {
 
         var handled = false
@@ -50,14 +54,23 @@ class Router {
             handled = backstack.peek().getScreen().handleBack()
 
             if (!handled && backstack.size > 1) {
-                screenContainer?.removeView(backstack.peek().getScreen().getView())
-                backstack.peek().getScreen().destroy()
-                backstack.pop()
+
+                popScreen()
 
                 handled = true
             }
         }
 
         return handled
+    }
+
+    private fun popScreen() {
+        screenContainer?.removeView(backstack.peek().getScreen().getView())
+        backstack.peek().getScreen().destroy()
+        backstack.pop()
+
+        if (backstack.size > 0) {
+            backstack.peek().getScreen().onScreenResume()
+        }
     }
 }
